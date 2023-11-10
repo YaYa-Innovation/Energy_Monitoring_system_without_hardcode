@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature-based Color Change</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow-y: auto;
+      background-image: url('your-background-image.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .temperature-header {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 24px;
+    }
+
+    .temperature-container {
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .temperature-box {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      border-radius: 8px;
+      transition: background-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .temperature-box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    }
+
+    .add-box-form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 10px;
+    }
+
+    .add-box-form input {
+      padding: 5px;
+      font-size: 16px;
+    }
+
+    .add-box-button {
+      padding: 8px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1>Page Header</h1>
+    <div class="add-box-form">
+      <input type="number" id="temperature-input" placeholder="Enter temperature">
+      <button class="add-box-button" onclick="addNewBox()">Add Box</button>
+    </div>
+  </div>
+
+  <div class="temperature-header">
+    <h2>Temperature Boxes</h2>
+  </div>
+
+  <div class="temperature-container" id="temperature-container">
+    <!-- Existing temperature boxes will be appended here -->
+    <!-- You can customize the existing temperatures as needed -->
+    <div class="temperature-box" id="temperature-box1"></div>
+    <div class="temperature-box" id="temperature-box2"></div>
+    <div class="temperature-box" id="temperature-box3"></div>
+    <div class="temperature-box" id="temperature-box4"></div>
+    <div class="temperature-box" id="temperature-box5"></div>
+    <div class="temperature-box" id="temperature-box6"></div>
+    <div class="temperature-box" id="temperature-box7"></div>
+    <div class="temperature-box" id="temperature-box8"></div>
+    <div class="temperature-box" id="temperature-box9"></div>
+    <div class="temperature-box" id="temperature-box10"></div>
+    <div class="temperature-box" id="temperature-box11"></div>
+    <div class="temperature-box" id="temperature-box12"></div>
+  </div>
+
+  <script>
+    function getTemperature(boxNumber) {
+      // Existing function to get temperature
+      switch (boxNumber) {
+        case 1: return 25;
+        case 2: return 30;
+        case 3: return 22;
+        case 4: return 28;
+        case 5: return 18;
+        case 6: return 26;
+        case 7: return 32;
+        case 8: return 23;
+        case 9: return 29;
+        case 10: return 20;
+        case 11: return 27;
+        case 12: return 31;
+        default: return 20;
+      }
+    }
+
+    function updateBoxColor(boxNumber) {
+      // Existing function to update box color
+      var temperature = getTemperature(boxNumber);
+      var box = document.getElementById('temperature-box' + boxNumber);
+
+      box.textContent = temperature + '°C';
+
+      if (temperature < 20) {
+        box.style.backgroundColor = '#3498db';
+      } else if (temperature < 30) {
+        box.style.backgroundColor = '#f39c12';
+      } else {
+        box.style.backgroundColor = '#e74c3c';
+      }
+    }
+
+    function addNewBox() {
+      // Function to add a new temperature box
+      var temperatureInput = document.getElementById('temperature-input');
+      var temperatureContainer = document.getElementById('temperature-container');
+
+      var newBox = document.createElement('div');
+      newBox.className = 'temperature-box';
+      newBox.textContent = temperatureInput.value + '°C';
+
+      var temperature = parseInt(temperatureInput.value);
+
+      if (!isNaN(temperature)) {
+        if (temperature < 20) {
+          newBox.style.backgroundColor = '#3498db';
+        } else if (temperature < 30) {
+          newBox.style.backgroundColor = '#f39c12';
+        } else {
+          newBox.style.backgroundColor = '#e74c3c';
+        }
+
+        temperatureContainer.appendChild(newBox);
+
+        // Update color for the new box
+        updateBoxColor(temperatureContainer.children.length);
+      }
+
+      // Clear the input field
+      temperatureInput.value = '';
+    }
+
+    // Initial update for existing boxes
+    for (var i = 1; i <= 12; i++) {
+      updateBoxColor(i);
+    }
+  </script>
+</body>
+</html>

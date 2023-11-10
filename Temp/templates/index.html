@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature-based Color Change</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow-y: auto;
+      background-image: url('your-background-image.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .temperature-header {
+      text-align: center;
+      margin: 10px 0;
+      font-size: 24px;
+    }
+
+    .temperature-container {
+      padding: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .temperature-box {
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      border-radius: 8px;
+      transition: background-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .temperature-box:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1>Page Header</h1>
+  </div>
+
+  <div class="temperature-header">
+    <h2>Temperature Boxes</h2>
+  </div>
+
+  <div class="temperature-container" id="temperature-container">
+    {% for temperature in temperatures %}
+      <div class="temperature-box" style="{{ 'background-color: #3498db;' if temperature[1] < '20' else ('background-color: #f39c12;' if temperature[1] < '30' else 'background-color: #e74c3c;') }}">
+        {{ 'temperature ' + temperature[0] + ' = ' + temperature[1] + '°C' }}
+      </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
