@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Temperature Boxes</title>
+</head>
+<body>
+    <header>
+        <h1>Energy Monitoring System</h1>
+    </header>
+    <div id="temperature-container">
+        {% for temperature in temperatures %}
+        <div class="temperature-box" data-box-number="{{ temperature[0] }}" style="background-color: {{ get_temperature_style(temperature[0]) }};">
+            <h1 class="temp-label" id="temp-label-{{ temperature[0] }}">{{ temperature[5] }}</h1>
+            <span class="temp-value" id="temp-value-{{ temperature[0] }}">{{ temperature[1] }} °C</span>
+            
+            <input type="text" class="temp-input" id="temp-input-{{ temperature[0] }}" style="display:none;" onblur="updateTemperature(this, '{{ temperature[0] }}')" value="{{ temperature[1] }}">
+        </div>
+        {% endfor %}
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        function updateTemperature(input, boxNumber) {
+            var newTemperature = input.value;
+            $.ajax({
+                type: 'POST',
+                url: '/update_temperature',
+                data: { 'box_number': boxNumber, 'new_temperature': newTemperature },
+                success: function() {
+                    $('#temp-value-' + boxNumber).text(newTemperature);
+                    $(input).hide();
+                }
+            });
+        }
+
+function updateTemperatureValues() {
+    $('.temperature-box').each(function() {
+        var boxNumber = $(this).data('box-number');
+        $.ajax({
+            type: 'GET',
+            url: '/get_temperature/' + boxNumber,
+            success: function(data) {
+                console.log('Received data:', data);
+
+                // Update the temperature value
+                $('#temp-value-' + boxNumber).text(data.temperature + ' °C');
+
+                // Set the background color based on temperature range
+                var colorValue = parseInt(data.color_values[1]);
+                if (!isNaN(colorValue)) {
+                    var normalColor = parseInt(data.color_values[2]);
+                    var warningColor = parseInt(data.color_values[3]);
+                    var dangerColor = parseInt(data.color_values[4]);
+
+                    if (colorValue < normalColor) {
+                        $(this).css('background-color', 'white');
+                    } else if (colorValue >= normalColor && colorValue <= warningColor) {
+                        $(this).css('background-color', 'yellow');
+                    } else if (colorValue > warningColor) {
+                        $(this).css('background-color', 'red');
+                    } else {
+                        // Handle other cases if needed
+                        $(this).css('background-color', 'gray');
+                    }
+                } else {
+                    console.error('Invalid color value:', data.color_values[1]);
+                }
+            }.bind(this) // Bind the current context to the success callback
+        });
+    });
+}
+
+// Update temperature values every 5 seconds
+setInterval(updateTemperatureValues, 5000);
+
+// Initial update on page load
+$(document).ready(function() {
+    updateTemperatureValues();
+});
+
+
+
+    </script>
+</body>
+</html>

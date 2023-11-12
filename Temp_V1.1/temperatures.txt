@@ -1,0 +1,5 @@
+temperature 1 = 80.547582782, normal_color=60, warning_color=70, danger_color=80, label=Nowews,
+temperature 2 = 40, normal_color=50, warning_color=60, danger_color=70, label=Normal Labeferferfl,
+temperature 3 = 60, normal_color=10, warning_color=30, danger_color=70, label=Nosqwabel
+temperature 4 = 50, normal_color=70, warning_color=80, danger_color=90, label=SBsfegre12
+temperature 5 = 101, normal_color=100, warning_color=120, danger_color=140, label=SBsfegre12
